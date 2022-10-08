@@ -56,6 +56,7 @@ def resume():
     mixer.init()
     mixer.music.load('shared_files/'+song_selected)
     mixer.music.play()
+    mixer.music.unpause()
 
 def pause():
     global song_selected
@@ -69,6 +70,10 @@ def pause():
 def musicWindow():
 
     global song_counter
+    global infoLabel
+    global filePathLabel
+    global listbox
+    
     window = Tk()
     window.title("Music Window")
     window.geometry("300x300")
@@ -79,16 +84,17 @@ def musicWindow():
 
     listbox = Listbox(window,height=10,width=39,activestyle='dotbox',bg='LightSkyBlue',borderwidth=2,font=("Calibri",10))
     listbox.place(x=10,y=18)
-
+    
+    for file in os.listdir("shared_files"):
+      filename = os.fsdecode(file)
+      listbox.insert(song_counter,filename)
+      song_counter = song_counter +1 
 
     scrollbar1 = Scrollbar(listbox)
     scrollbar1.place(relheight=1,relx=1)
     scrollbar1.config(command=listbox.yview)
 
-    for file in os.listdir("shared_files"):
-      filename = os.fsdecode(file)
-      listbox.insert(song_counter,filename)
-      song_counter = song_counter +1 
+
 
     playButton = Button(window,text='Play',bd=1,width=10,bg='SkyBlue',font=("Calibri",10),command=play)
     playButton.place(x=30,y=200)
